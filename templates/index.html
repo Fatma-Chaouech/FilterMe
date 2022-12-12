@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Edit Image</title>
+{% endblock %}
+
+
+
+{% block body %}
+<script>document.cookie = "image=image; sameSite=None; path=/"</script>
+<div class="mdc-card">
+    <div class="options-panel">
+      <div class="filtering-options">
+        <form  action="/" method="post">
+            <div class="filter-option">
+                <h3 class="filter-title">Average Filter</h3>          
+                <button onclick="updateImage()" class="mdc-button filter-button" id="buttonOne">
+                    <span class="mdc-button__ripple"></span>
+                    <span class="mdc-button__label" >Apply</span>
+                </button>
+            </div>
+            <label class="mdc-text-field mdc-text-field--outlined" style="width: 400px">
+                <span class="mdc-notched-outline">
+                    <span class="mdc-notched-outline__leading"></span>
+                    <span class="mdc-notched-outline__trailing"></span>
+                </span>
+                <input type="number" name="average" class="mdc-text-field__input" aria-labelledby="my-label-id" placeholder="Shape">
+            </label>
+        </form>
+        <div class="filter-option">
+          <h3 class="filter-title">Gaussian Filter</h3>
+          <button onclick="updateImage()" class="mdc-button filter-button" id="buttonTwo">
+            <span class="mdc-button__ripple"></span>
+            <span class="mdc-button__label">Apply</span>
+         </button>
+        </div>
+        <div class="filter-option">
+          <h3 class="filter-title">Thresholding</h3>
+          
+        </div>
+        <ul class="mdc-list mdc-list--two-line">
+          <li class="mdc-list-item ">
+            <div class="thresh-option">
+              <h4 class="filter-subtitle">Automatic Threshold</h4>
+              <button onclick="updateImage()" class="mdc-button thresh-button" id="buttonThree">
+                <span class="mdc-button__ripple"></span>
+                <span class="mdc-button__label">Apply</span>
+             </button>
+            </div>
+          </li>
+          <li class="mdc-list-item">
+            <div class="thresh-option">
+              <h4 class="filter-subtitle">Manual Threshold</h4>
+              <button onclick="updateImage()" class="mdc-button thresh-button" id="buttonFour">
+                <span class="mdc-button__ripple"></span>
+                <span class="mdc-button__label">Apply</span>
+             </button>
+            </div>
+          </li>
+          <li class="mdc-list-item">
+            <form id="manual-thresholding-form thresh-form">
+              <label for="red-threshold-input thresh-color">Red Thresh</label>
+              <label class="mdc-text-field mdc-text-field--outlined label-thresh">
+                <span class="mdc-notched-outline">
+                  <span class="mdc-notched-outline__leading"></span>
+                  <span class="mdc-notched-outline__trailing"></span>
+                </span>
+                <input type="number" class="mdc-text-field__input input-thresh" aria-labelledby="my-label-id" placeholder="Red Thresh">
+              </label>
+              <br>
+              <br>
+              <label for="green-threshold-input thresh-color">Green Thresh</label>
+              <label class="mdc-text-field mdc-text-field--outlined label-thresh">
+                <span class="mdc-notched-outline">
+                  <span class="mdc-notched-outline__leading"></span>
+                  <span class="mdc-notched-outline__trailing"></span>
+                </span>
+                <input type="number" class="mdc-text-field__input input-thresh" aria-labelledby="my-label-id" placeholder="Red Thresh">
+              </label>
+              <br>
+              <br>
+              <label for="blue-threshold-input thresh-color" >Blue Thresh</label>
+              <label class="mdc-text-field mdc-text-field--outlined label-thresh">
+                <span class="mdc-notched-outline">
+                  <span class="mdc-notched-outline__leading"></span>
+                  <span class="mdc-notched-outline__trailing"></span>
+                </span>
+                <input type="number" class="mdc-text-field__input input-thresh" aria-labelledby="my-label-id" placeholder="Red Thresh">
+              </label>
+            </form>
+          </li>
+          
+        </ul>
+        
+      </div>
+    </div>
+    <div class="image-panel">
+      <div class="mdc-card image-displayer">
+        <div class="image-container">
+          <img src="" id="img" alt="image" class="image">
+        </div>
+      </div>
+      <div class="bottom-panel">
+        <form action="/" method="post">
+        <input id="browse-input" name="save" type="file" onchange="previewImage(this)" >
+        <button onclick="updateImage()" class="mdc-button mdc-button--raised save-button" id="saveButton" >
+          <span class="mdc-button__label">Save</span>
+
+        </button>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+
+
+  <script>
+    function previewImage(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+  
+          document.getElementById('img').src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  
+    function updateImage() {
+      
+
+      var im = document.getElementById('img');
+      console.log("Updating image");
+      console.log('{{ image | tojson |safe }}');
+      im.src = '{{ image | tojson |safe }}';
+    }
+ 
+  
+  </script>
+
+{% endblock %}
